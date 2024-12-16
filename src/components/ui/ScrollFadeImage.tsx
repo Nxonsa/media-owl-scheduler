@@ -5,7 +5,7 @@ interface ScrollFadeImageProps {
   alt: string;
 }
 
-const ScrollFadeImage = ({ src, alt }: ScrollFadeImageProps) => {
+export const ScrollFadeImage = ({ src, alt }: ScrollFadeImageProps) => {
   const [opacity, setOpacity] = useState(0);
   const imageRef = useRef<HTMLDivElement>(null);
 
@@ -45,5 +45,3 @@ const ScrollFadeImage = ({ src, alt }: ScrollFadeImageProps) => {
     </div>
   );
 };
-
-export default ScrollFadeImage;
