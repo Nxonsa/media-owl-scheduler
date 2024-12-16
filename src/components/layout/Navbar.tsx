@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -26,7 +28,7 @@ const Navbar = () => {
             <a href="#contact" className="nav-link">
               Contact
             </a>
-            <Button>Schedule a Call</Button>
+            <Button onClick={() => navigate('/schedule')}>Schedule a Call</Button>
           </div>
 
           {/* Mobile Navigation Button */}
@@ -65,7 +67,12 @@ const Navbar = () => {
               >
                 Contact
               </a>
-              <Button onClick={() => setIsOpen(false)}>Schedule a Call</Button>
+              <Button onClick={() => {
+                navigate('/schedule');
+                setIsOpen(false);
+              }}>
+                Schedule a Call
+              </Button>
             </div>
           </div>
         )}

@@ -1,10 +1,13 @@
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <footer className="bg-background border-t border-border py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-xl font-bold mb-4">Media Owl</h3>
             <p className="text-muted-foreground">
@@ -41,36 +44,14 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-muted-foreground hover:text-foreground">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground">
                   Contact
                 </a>
               </li>
             </ul>
           </div>
-          <div>
-            <h4 className="font-semibold mb-4">Connect</h4>
-            <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-foreground">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground">
-                <Linkedin size={20} />
-              </a>
-            </div>
-          </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Media Owl. All rights reserved.</p>
+          <p>&copy; 2020 Paperpipes The Agency. All rights reserved.</p>
         </div>
       </div>
     </footer>
