@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Laptop, Smartphone, Code, Megaphone } from "lucide-react";
+import { Laptop, Smartphone, Code, Megaphone, Users } from "lucide-react";
 
 const services = [
   {
@@ -32,6 +32,12 @@ const services = [
       "Drive growth with data-driven digital marketing strategies.",
     icon: Megaphone,
   },
+  {
+    title: "Usability Testing",
+    description:
+      "Comprehensive usability testing with panel groups or individual sessions to ensure optimal user experience.",
+    icon: Users,
+  },
 ];
 
 const Services = () => {
@@ -45,7 +51,7 @@ const Services = () => {
             business thrive in the digital age.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <Card
               key={index}
