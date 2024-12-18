@@ -5,6 +5,11 @@ import { useNavigate } from "react-router-dom";
 const Hero = () => {
   const navigate = useNavigate();
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    contactSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center pt-16">
       <div className="container px-4 mx-auto">
@@ -17,7 +22,7 @@ const Hero = () => {
             digital experiences that drive growth and innovation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
-            <Button size="lg" className="group">
+            <Button size="lg" className="group" onClick={scrollToContact}>
               Get Started
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
