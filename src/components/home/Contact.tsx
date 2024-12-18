@@ -8,6 +8,21 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Log the message details that would be sent
+    console.log("Sending message to admin@mediaowl.co.za");
+    
+    // Here you would typically send this to your backend
+    const formData = new FormData(e.target as HTMLFormElement);
+    const messageDetails = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+      recipient: "admin@mediaowl.co.za"
+    };
+    
+    console.log("Message details:", messageDetails);
+    
     toast({
       title: "Message sent!",
       description: "We'll get back to you as soon as possible.",
@@ -32,6 +47,7 @@ const Contact = () => {
                 </label>
                 <Input
                   id="name"
+                  name="name"
                   placeholder="John Doe"
                   required
                   className="w-full"
@@ -43,6 +59,7 @@ const Contact = () => {
                 </label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="john@example.com"
                   required
@@ -56,6 +73,7 @@ const Contact = () => {
               </label>
               <Textarea
                 id="message"
+                name="message"
                 placeholder="Tell us about your project..."
                 required
                 className="w-full min-h-[150px]"

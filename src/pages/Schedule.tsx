@@ -63,16 +63,14 @@ const Schedule = () => {
       date,
       time,
       requirements,
-      email: "admin@mediaowl.co.za"
+      recipient: "admin@mediaowl.co.za"
     };
 
     console.log("Scheduling meeting:", meetingDetails);
+    console.log("Sending email to admin@mediaowl.co.za");
     
-    // Simulate sending email
     try {
       // In a real application, this would be an API call
-      console.log("Sending email to admin@mediaowl.co.za");
-      
       toast({
         title: "Meeting Scheduled!",
         description: "You will receive a confirmation email shortly.",
