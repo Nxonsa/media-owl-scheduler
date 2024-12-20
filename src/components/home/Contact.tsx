@@ -2,31 +2,55 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from '@emailjs/browser';
+import { useState } from "react";
 
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    // Log the message details that would be sent
-    console.log("Sending message to admin@mediaowl.co.za");
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
     
-    // Here you would typically send this to your backend
-    const formData = new FormData(e.target as HTMLFormElement);
-    const messageDetails = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message'),
-      recipient: "admin@mediaowl.co.za"
-    };
-    
-    console.log("Message details:", messageDetails);
-    
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
+    try {
+      const templateParams = {
+        from_name: formData.get('name'),
+        from_email: formData.get('email'),
+        message: formData.get('message'),
+        to_email: "admin@mediaowl.co.za",
+      };
+
+      console.log("Sending email to admin@mediaowl.co.za");
+      console.log("Message details:", templateParams);
+
+      const response = await emailjs.send(
+        'YOUR_SERVICE_ID', // You'll need to replace this
+        'YOUR_TEMPLATE_ID', // You'll need to replace this
+        templateParams,
+        'YOUR_PUBLIC_KEY' // You'll need to replace this
+      );
+
+      if (response.status === 200) {
+        toast({
+          title: "Message sent!",
+          description: "We'll get back to you as soon as possible.",
+        });
+        form.reset();
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      toast({
+        title: "Error sending message",
+        description: "Please try again later or contact us directly at admin@mediaowl.co.za",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -79,8 +103,13 @@ const Contact = () => {
                 className="w-full min-h-[150px]"
               />
             </div>
-            <Button type="submit" size="lg" className="w-full">
-              Send Message
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="w-full"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
           </form>
         </div>
