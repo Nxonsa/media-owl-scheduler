@@ -11,7 +11,7 @@ const Contact = () => {
 
   useEffect(() => {
     // Initialize EmailJS with your public key
-    emailjs.init("YOUR_PUBLIC_KEY");
+    emailjs.init("user_YOUR_PUBLIC_KEY"); // Note: Add "user_" prefix
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,10 +35,9 @@ const Contact = () => {
 
       // Send to EmailJS
       await emailjs.send(
-        'YOUR_SERVICE_ID',  // Replace with your EmailJS service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-        templateParams,
-        'YOUR_PUBLIC_KEY'   // Replace with your EmailJS public key
+        'service_YOUR_SERVICE_ID',  // Note: Add "service_" prefix
+        'template_YOUR_TEMPLATE_ID', // Note: Add "template_" prefix
+        templateParams
       );
 
       // Then, submit to Google Sheets
