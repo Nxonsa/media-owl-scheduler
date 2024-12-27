@@ -51,7 +51,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border text-center text-muted-foreground">
-          <p>&copy; 2020 Paperpipes The Agency. All rights reserved.</p>
+          <p>&copy; 2024 Media Owl. All rights reserved.</p>
         </div>
       </div>
     </footer>

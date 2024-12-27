@@ -17,6 +17,7 @@ const Contact = () => {
     const formData = new FormData(form);
     
     try {
+      // First, send email via EmailJS
       const templateParams = {
         from_name: formData.get('name'),
         from_email: formData.get('email'),
@@ -27,24 +28,39 @@ const Contact = () => {
       console.log("Sending email to admin@mediaowl.co.za");
       console.log("Message details:", templateParams);
 
-      const response = await emailjs.send(
-        'YOUR_SERVICE_ID', // You'll need to replace this
-        'YOUR_TEMPLATE_ID', // You'll need to replace this
+      // Send to EmailJS (you'll need to replace these values)
+      await emailjs.send(
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
         templateParams,
-        'YOUR_PUBLIC_KEY' // You'll need to replace this
+        'YOUR_PUBLIC_KEY'
       );
 
-      if (response.status === 200) {
+      // Then, submit to Google Sheets
+      const response = await fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          message: "Newsletter Signup",
+          timestamp: new Date().toISOString()
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
         toast({
-          title: "Message sent!",
-          description: "We'll get back to you as soon as possible.",
+          title: "Thank you for signing up!",
+          description: "You'll be the first to hear about our sales and upcoming opportunities.",
         });
         form.reset();
       }
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('Error:', error);
       toast({
-        title: "Error sending message",
+        title: "Error",
         description: "Please try again later or contact us directly at admin@mediaowl.co.za",
         variant: "destructive",
       });
@@ -58,9 +74,9 @@ const Contact = () => {
       <div className="container px-4 mx-auto">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
+            <h2 className="text-3xl font-bold mb-4">Sign Up for Updates</h2>
             <p className="text-muted-foreground">
-              Have a project in mind? We'd love to hear from you.
+              Be the first to hear about our sales and upcoming opportunities!
             </p>
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -93,13 +109,12 @@ const Contact = () => {
             </div>
             <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2">
-                Message
+                Message (Optional)
               </label>
               <Textarea
                 id="message"
                 name="message"
-                placeholder="Tell us about your project..."
-                required
+                placeholder="Any specific interests or questions?"
                 className="w-full min-h-[150px]"
               />
             </div>
@@ -109,7 +124,7 @@ const Contact = () => {
               className="w-full"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {isSubmitting ? "Signing Up..." : "Sign Up for Updates"}
             </Button>
           </form>
         </div>
