@@ -3,11 +3,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from '@emailjs/browser';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // Initialize EmailJS with your public key
+    emailjs.init("YOUR_PUBLIC_KEY");
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,12 +33,12 @@ const Contact = () => {
       console.log("Sending email to admin@mediaowl.co.za");
       console.log("Message details:", templateParams);
 
-      // Send to EmailJS (you'll need to replace these values)
+      // Send to EmailJS
       await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        'YOUR_SERVICE_ID',  // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
         templateParams,
-        'YOUR_PUBLIC_KEY'
+        'YOUR_PUBLIC_KEY'   // Replace with your EmailJS public key
       );
 
       // Then, submit to Google Sheets
