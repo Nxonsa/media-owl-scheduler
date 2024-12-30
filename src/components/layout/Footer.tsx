@@ -1,5 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -46,6 +54,43 @@ const Footer = () => {
                 <a href="#" className="text-muted-foreground hover:text-foreground">
                   Contact
                 </a>
+              </li>
+              <li>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-muted-foreground hover:text-foreground">
+                      Careers
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Work From Home Sales Position</DialogTitle>
+                      <DialogDescription className="space-y-4 pt-4">
+                        <p>
+                          We are currently looking for Work From Home Sales Persons to join our team!
+                        </p>
+                        <div className="space-y-2">
+                          <p className="font-semibold">Offer:</p>
+                          <ul className="list-disc pl-5 space-y-1">
+                            <li>R4,500 Monthly Basic Salary</li>
+                            <li>Uncapped Commission Structure</li>
+                            <li>Work From Home Opportunity</li>
+                          </ul>
+                        </div>
+                        <p className="font-semibold">How to Apply:</p>
+                        <p>
+                          Send your CV and motivation to{" "}
+                          <a
+                            href="mailto:admin@mediaowl.com"
+                            className="text-primary hover:underline"
+                          >
+                            admin@mediaowl.com
+                          </a>
+                        </p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               </li>
             </ul>
           </div>

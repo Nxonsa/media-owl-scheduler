@@ -2,17 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import emailjs from '@emailjs/browser';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    // Initialize EmailJS with your public key
-    emailjs.init("admin_YOUR_PUBLIC_KEY");
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,31 +16,15 @@ const Contact = () => {
     const formData = new FormData(form);
     
     try {
-      // First, send email via EmailJS
-      const templateParams = {
-        from_name: formData.get('name'),
-        from_email: formData.get('email'),
-        message: formData.get('message'),
-        to_email: "admin@mediaowl.co.za",
-      };
-
-      console.log("Sending email to admin@mediaowl.co.za");
-      console.log("Message details:", templateParams);
-
-      // Send to EmailJS
-      await emailjs.send(
-        'admin_YOUR_SERVICE_ID',
-        'admin_YOUR_TEMPLATE_ID',
-        templateParams
-      );
-
-      // Then, submit to Google Sheets
+      // Submit to Google Sheets
       const response = await fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec', {
         method: 'POST',
         body: JSON.stringify({
           name: formData.get('name'),
           email: formData.get('email'),
-          message: "Newsletter Signup",
+          phone: formData.get('phone'),
+          message: formData.get('message'),
+          type: "Newsletter Signup",
           timestamp: new Date().toISOString()
         }),
         headers: {
@@ -65,7 +43,7 @@ const Contact = () => {
       console.error('Error:', error);
       toast({
         title: "Error",
-        description: "Please try again later or contact us directly at admin@mediaowl.co.za",
+        description: "Please try again later.",
         variant: "destructive",
       });
     } finally {
@@ -110,6 +88,19 @@ const Contact = () => {
                   className="w-full"
                 />
               </div>
+            </div>
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                Phone Number
+              </label>
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="0123456789"
+                required
+                className="w-full"
+              />
             </div>
             <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2">

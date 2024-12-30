@@ -4,11 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const Schedule = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState<string>("");
   const [requirements, setRequirements] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const { toast } = useToast();
 
   // Simulated busy times (in reality, this would come from an API)
@@ -49,7 +53,7 @@ const Schedule = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !time || !requirements) {
+    if (!date || !time || !requirements || !name || !email || !phone) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
@@ -58,23 +62,38 @@ const Schedule = () => {
       return;
     }
 
-    // Here you would typically send this to your backend
-    const meetingDetails = {
-      date,
-      time,
-      requirements,
-      recipient: "admin@mediaowl.co.za"
-    };
-
-    console.log("Scheduling meeting:", meetingDetails);
-    console.log("Sending email to admin@mediaowl.co.za");
-    
     try {
-      // In a real application, this would be an API call
-      toast({
-        title: "Meeting Scheduled!",
-        description: "You will receive a confirmation email shortly.",
+      // Submit to Google Sheets
+      const response = await fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          date: date.toISOString(),
+          time,
+          requirements,
+          type: "Meeting Schedule",
+          timestamp: new Date().toISOString()
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
+
+      if (response.ok) {
+        toast({
+          title: "Meeting Scheduled!",
+          description: "You will receive a confirmation shortly.",
+        });
+        // Reset form
+        setDate(undefined);
+        setTime("");
+        setRequirements("");
+        setName("");
+        setEmail("");
+        setPhone("");
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -101,6 +120,35 @@ const Schedule = () => {
         <div>
           <h2 className="text-2xl font-semibold mb-4">Meeting Details</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Name</label>
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="Your name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Email</label>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="your@email.com"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Phone</label>
+              <Input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                placeholder="Your phone number"
+              />
+            </div>
             <div>
               <label className="block text-sm font-medium mb-2">
                 Select Time
