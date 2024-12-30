@@ -11,7 +11,7 @@ const Contact = () => {
 
   useEffect(() => {
     // Initialize EmailJS with your public key
-    emailjs.init("user_YOUR_PUBLIC_KEY"); // Note: Add "user_" prefix
+    emailjs.init("admin_YOUR_PUBLIC_KEY");
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,8 +35,8 @@ const Contact = () => {
 
       // Send to EmailJS
       await emailjs.send(
-        'service_YOUR_SERVICE_ID',  // Note: Add "service_" prefix
-        'template_YOUR_TEMPLATE_ID', // Note: Add "template_" prefix
+        'admin_YOUR_SERVICE_ID',
+        'admin_YOUR_TEMPLATE_ID',
         templateParams
       );
 
