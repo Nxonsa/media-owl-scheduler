@@ -13,7 +13,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <a href="/" className="text-2xl font-bold text-foreground">
-              Media Owl
+              Media Owl Digital Innovations
             </a>
           </div>
 
@@ -22,13 +22,24 @@ const Navbar = () => {
             <a href="#services" className="nav-link">
               Services
             </a>
-            <a href="#about" className="nav-link">
+            <button onClick={() => navigate('/blog')} className="nav-link">
+              Blog
+            </button>
+            <button onClick={() => navigate('/funders')} className="nav-link">
+              Funders
+            </button>
+            <button onClick={() => navigate('/about')} className="nav-link">
               About
-            </a>
+            </button>
             <a href="#contact" className="nav-link">
               Contact
             </a>
-            <Button onClick={() => navigate('/schedule')}>Schedule a Call</Button>
+            <Button 
+              onClick={() => navigate('/schedule')}
+              className="hover:bg-primary/90 transition-colors"
+            >
+              Schedule a Call
+            </Button>
           </div>
 
           {/* Mobile Navigation Button */}
@@ -53,13 +64,33 @@ const Navbar = () => {
               >
                 Services
               </a>
-              <a
-                href="#about"
-                className="nav-link"
-                onClick={() => setIsOpen(false)}
+              <button 
+                onClick={() => {
+                  navigate('/blog');
+                  setIsOpen(false);
+                }}
+                className="nav-link text-left"
+              >
+                Blog
+              </button>
+              <button 
+                onClick={() => {
+                  navigate('/funders');
+                  setIsOpen(false);
+                }}
+                className="nav-link text-left"
+              >
+                Funders
+              </button>
+              <button 
+                onClick={() => {
+                  navigate('/about');
+                  setIsOpen(false);
+                }}
+                className="nav-link text-left"
               >
                 About
-              </a>
+              </button>
               <a
                 href="#contact"
                 className="nav-link"
@@ -67,10 +98,13 @@ const Navbar = () => {
               >
                 Contact
               </a>
-              <Button onClick={() => {
-                navigate('/schedule');
-                setIsOpen(false);
-              }}>
+              <Button 
+                onClick={() => {
+                  navigate('/schedule');
+                  setIsOpen(false);
+                }}
+                className="hover:bg-primary/90 transition-colors"
+              >
                 Schedule a Call
               </Button>
             </div>
