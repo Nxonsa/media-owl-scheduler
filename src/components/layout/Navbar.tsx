@@ -12,8 +12,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <a href="/" className="text-2xl font-bold text-foreground">
-              Media Owl Digital Innovations
+            <a href="/" className="text-2xl font-bold text-foreground md:text-2xl text-lg">
+              Media Owl
             </a>
           </div>
 

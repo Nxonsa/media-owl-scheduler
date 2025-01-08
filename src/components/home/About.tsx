@@ -3,28 +3,34 @@ const About = () => {
     <section id="about" className="py-20">
       <div className="container px-4 mx-auto">
         <div className="flex flex-col items-center">
-          <div>
+          <div className="max-w-3xl">
             <h2 className="text-3xl font-bold mb-6">About Media Owl</h2>
-            <p className="text-muted-foreground mb-6">
-              At Media Owl, we're more than just a digital agency. We're your
-              partners in digital transformation, bringing over five years of
-              industry expertise to every project we undertake.
-            </p>
-            <p className="text-muted-foreground mb-6">
-              Our journey began with a simple mission: to help businesses thrive
-              in the digital age. Today, we're proud to have served countless
-              clients, delivering innovative solutions that drive real results.
-            </p>
-            <div className="grid grid-cols-3 gap-8">
-              <div>
+            <div className="space-y-6 text-muted-foreground">
+              <p>
+                Media Owl is a proudly South African digital agency based in the heart of our vibrant nation. 
+                We're committed to driving digital transformation while creating opportunities for our local talent.
+              </p>
+              <p>
+                Our journey began with a vision to bridge the digital divide in South Africa, 
+                and today we're proud to be affiliated with various technology initiatives 
+                and movements that promote digital literacy and entrepreneurship in our communities.
+              </p>
+              <p>
+                We actively collaborate with local tech hubs, participate in skills development 
+                programs, and partner with organizations that share our vision of a digitally 
+                empowered South Africa.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+              <div className="text-center">
                 <h3 className="text-3xl font-bold mb-2">5+</h3>
                 <p className="text-sm text-muted-foreground">Years Experience</p>
               </div>
-              <div>
+              <div className="text-center">
                 <h3 className="text-3xl font-bold mb-2">100+</h3>
                 <p className="text-sm text-muted-foreground">Projects Completed</p>
               </div>
-              <div>
+              <div className="text-center">
                 <h3 className="text-3xl font-bold mb-2">50+</h3>
                 <p className="text-sm text-muted-foreground">Happy Clients</p>
               </div>
