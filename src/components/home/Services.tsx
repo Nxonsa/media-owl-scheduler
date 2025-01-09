@@ -1,15 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Laptop, Smartphone, Code, Megaphone, Users } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { ServiceDialog } from "../services/ServiceDialog";
 
 const services = [
   {
@@ -144,7 +138,6 @@ const Services = () => {
 
   const handlePayment = async (amount: number, serviceName: string) => {
     try {
-      // Initialize Yoco
       const yoco = new (window as any).YocoSDK({
         publicKey: 'pk_test_a1bb5ea2qWRdJrL8a3d4'
       });
@@ -167,7 +160,6 @@ const Services = () => {
               description: "Redirecting you to schedule a call...",
             });
             
-            // Wait for 2 seconds before redirecting
             setTimeout(() => {
               navigate('/schedule', { 
                 state: { 
@@ -193,7 +185,6 @@ const Services = () => {
     <section id="services" className="py-20">
       <div className="container px-4 mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-primary mb-4">Your website will be live within 42 hours!</p>
           <h2 className="text-3xl font-bold mb-4">Our Services</h2>
           <p className="text-muted-foreground">
             We offer a comprehensive suite of digital services to help your
@@ -216,58 +207,10 @@ const Services = () => {
                   </CardContent>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="max-w-4xl">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl mb-4">{service.title}</DialogTitle>
-                  <DialogDescription>
-                    {service.consultOnly ? (
-                      <div className="text-center p-6">
-                        <p className="mb-6">{service.consultText || "Please schedule a call for a custom quote tailored to your needs."}</p>
-                        <Button onClick={() => navigate('/schedule')} className="hover:scale-105 transform duration-200">
-                          Schedule a Call
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {service.pricing?.map((plan, planIndex) => (
-                          <Card key={planIndex} className="hover:shadow-lg transition-all duration-300">
-                            <CardHeader>
-                              <CardTitle>{plan.name}</CardTitle>
-                              {'monthly' in plan ? (
-                                <div className="space-y-2">
-                                  <p className="text-2xl font-bold">R{plan.monthly} /month</p>
-                                  <p className="text-sm text-muted-foreground">or R{plan.yearly} /year</p>
-                                </div>
-                              ) : (
-                                <p className="text-2xl font-bold">R{plan.price}</p>
-                              )}
-                            </CardHeader>
-                            <CardContent>
-                              <ul className="space-y-2">
-                                {plan.features.map((feature, featureIndex) => (
-                                  <li key={featureIndex} className="flex items-center gap-2">
-                                    <span className="text-primary">•</span>
-                                    {feature}
-                                  </li>
-                                ))}
-                              </ul>
-                              <Button 
-                                className="w-full mt-6 hover:scale-105 transform duration-200"
-                                onClick={() => handlePayment(
-                                  parseFloat(('monthly' in plan ? plan.monthly : plan.price).replace(',', '')),
-                                  `${service.title} - ${plan.name}`
-                                )}
-                              >
-                                Get Started
-                              </Button>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </div>
-                    )}
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
+              <ServiceDialog 
+                service={service}
+                onPayment={handlePayment}
+              />
             </Dialog>
           ))}
         </div>
