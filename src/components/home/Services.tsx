@@ -15,6 +15,7 @@ const services = [
         name: "Simple Website",
         monthly: "243.90",
         yearly: "1325.45",
+        yearlyDiscount: "1592.35",
         features: [
           "Simple landing page",
           "Email contact form",
@@ -27,6 +28,7 @@ const services = [
         name: "Standard Website",
         monthly: "375.75",
         yearly: "2780.04",
+        yearlyDiscount: "1728.96",
         features: [
           "Everything in Simple Website",
           "Email Subscription",
@@ -40,6 +42,7 @@ const services = [
         name: "Advanced Website",
         monthly: "886.25",
         yearly: "5500.00",
+        yearlyDiscount: "5135.00",
         features: [
           "Everything in Standard Website",
           "Multiple vendor platform",
@@ -106,9 +109,11 @@ const services = [
     pricing: [
       {
         name: "Beginner Researcher",
-        price: "25,345.00",
+        price: "23,321.48",
         features: [
-          "10x users one-on-one (1 hour Zoom)"
+          "10x users one-on-one (1 hour Zoom)",
+          "In-person forum discussion",
+          "In-person usability testing for objects and products"
         ]
       },
       {
