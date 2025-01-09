@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +19,10 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
+            <button onClick={() => navigate('/')} className="nav-link flex items-center gap-2">
+              <Home size={16} />
+              Home
+            </button>
             <a href="#services" className="nav-link">
               Services
             </a>
@@ -36,7 +40,7 @@ const Navbar = () => {
             </a>
             <Button 
               onClick={() => navigate('/schedule')}
-              className="hover:bg-primary/90 transition-colors"
+              className="hover:bg-primary/90 transition-colors hover:scale-105 transform duration-200"
             >
               Schedule a Call
             </Button>
@@ -57,6 +61,16 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden">
             <div className="flex flex-col space-y-4 py-4">
+              <button 
+                onClick={() => {
+                  navigate('/');
+                  setIsOpen(false);
+                }}
+                className="nav-link text-left flex items-center gap-2"
+              >
+                <Home size={16} />
+                Home
+              </button>
               <a
                 href="#services"
                 className="nav-link"
@@ -103,7 +117,7 @@ const Navbar = () => {
                   navigate('/schedule');
                   setIsOpen(false);
                 }}
-                className="hover:bg-primary/90 transition-colors"
+                className="hover:bg-primary/90 transition-colors hover:scale-105 transform duration-200"
               >
                 Schedule a Call
               </Button>

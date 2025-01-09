@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const Blog = () => {
   const [expandedPosts, setExpandedPosts] = useState<string[]>([]);
@@ -27,28 +29,94 @@ const Blog = () => {
       slug: "founder-story",
     },
     {
-      title: "Web Development Best Practices in 2024",
-      description: "Learn about the latest trends and best practices in web development",
-      content: "Web development continues to evolve rapidly in 2024. Key trends include the rise of AI-powered development tools, increased focus on accessibility, and the growing importance of performance optimization. Stay ahead of the curve by implementing these best practices in your projects.",
-      slug: "web-dev-best-practices",
+      title: "This makes your prototype user friendly",
+      description: "Essential tips for user-friendly prototypes",
+      content: `Creating a user-friendly prototype is crucial for the success of your digital product. Here are key principles to follow:
+
+      1. Clear Navigation: Users should always know where they are
+      2. Consistent Design: Maintain visual consistency throughout
+      3. Feedback Mechanisms: Provide clear feedback for user actions
+      4. Simplified Flows: Remove unnecessary steps and complexity
+      5. Accessibility: Ensure your prototype works for all users
+
+      To truly ensure your prototype is user-friendly, professional usability testing is essential. Our usability testing service can help identify potential issues early and save costly revisions later.`,
+      slug: "user-friendly-prototype",
+      service: "usability-testing"
     },
     {
-      title: "User Testing in South Africa",
-      description: "A guide to user testing for South African developers",
-      content: "User testing is crucial for creating successful digital products. In the South African context, it's important to consider our unique market conditions, diverse user base, and varying levels of digital literacy. This guide helps you navigate these challenges effectively.",
-      slug: "user-testing-sa",
+      title: "Why a friendly website is bound to make more sales",
+      description: "The connection between user experience and conversion rates",
+      content: `A user-friendly website directly impacts your bottom line. Here's why:
+
+      1. Lower Bounce Rates: Users stay longer on intuitive websites
+      2. Higher Conversion Rates: Easy navigation leads to more sales
+      3. Better Brand Perception: Professional design builds trust
+      4. Increased Return Visits: Good experiences bring customers back
+      5. Word-of-Mouth Marketing: Satisfied users recommend your site
+
+      Want to ensure your website is optimized for sales? Our usability testing service can help identify and eliminate friction points in your user journey.`,
+      slug: "website-sales",
+      service: "usability-testing"
     },
     {
-      title: "Prototype Testing Guidelines",
-      description: "How to effectively test your prototypes",
-      content: "Effective prototype testing is key to successful product development. Learn about the different stages of testing, from paper prototypes to high-fidelity mockups, and how to gather meaningful feedback that drives product improvement.",
-      slug: "prototype-testing",
+      title: "Why is it important to have a presence online",
+      description: "The benefits of digital presence for modern businesses",
+      content: `In today's digital age, online presence is no longer optional. Here's why:
+
+      1. 24/7 Availability: Your business never closes
+      2. Global Reach: Access customers worldwide
+      3. Cost-Effective Marketing: Lower costs than traditional advertising
+      4. Better Customer Insights: Track and analyze customer behavior
+      5. Competitive Advantage: Stay ahead of offline-only competitors
+
+      Ready to establish or improve your online presence? Our digital marketing services can help you build and maintain a strong online presence.`,
+      slug: "online-presence",
+      service: "digital-marketing"
     },
     {
-      title: "Software Development in South Africa",
-      description: "The state of software development in South Africa",
-      content: "South Africa's software development industry is growing rapidly, with increasing opportunities for local talent. This article explores the current landscape, challenges, and opportunities in the South African tech ecosystem.",
-      slug: "software-dev-sa",
+      title: "How to have an online presence",
+      description: "Steps to establish your digital footprint",
+      content: `Building a strong online presence requires a strategic approach:
+
+      1. Professional Website: Your digital storefront
+      2. Social Media Presence: Engage with your audience
+      3. Content Strategy: Regular, valuable content
+      4. SEO Optimization: Be found by your target audience
+      5. Online Advertising: Reach specific demographics
+
+      Need help implementing these strategies? Our digital marketing team can create a customized plan for your business.`,
+      slug: "build-online-presence",
+      service: "digital-marketing"
+    },
+    {
+      title: "How to make a website without coding",
+      description: "Modern solutions for website creation",
+      content: `While coding knowledge isn't necessary for creating a website, professional development ensures better results:
+
+      1. Custom Design: Unique to your brand
+      2. Better Performance: Optimized code and loading times
+      3. Enhanced Security: Professional security measures
+      4. Scalability: Room for growth
+      5. Professional Support: Expert assistance when needed
+
+      Want a professional website without the hassle? Our website development service handles everything for you.`,
+      slug: "no-code-website",
+      service: "website-development"
+    },
+    {
+      title: "Do I need a website",
+      description: "Understanding the importance of websites in modern business",
+      content: `In today's digital world, a website is essential for business success:
+
+      1. Credibility: Professional online presence builds trust
+      2. Accessibility: Information available 24/7
+      3. Marketing Hub: Central point for all marketing efforts
+      4. Lead Generation: Capture potential customer information
+      5. Cost-Effective: Lower overhead than physical locations
+
+      Ready to take your business online? Our website development team can create the perfect solution for your needs.`,
+      slug: "need-website",
+      service: "website-development"
     },
   ];
 
@@ -75,16 +143,35 @@ const Blog = () => {
                     {post.content}
                   </p>
                 </div>
-                <button 
-                  onClick={() => togglePost(post.slug)}
-                  className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-                >
-                  {expandedPosts.includes(post.slug) ? (
-                    <>Read less <ChevronUp className="h-4 w-4" /></>
-                  ) : (
-                    <>Read more <ChevronDown className="h-4 w-4" /></>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button 
+                    onClick={() => togglePost(post.slug)}
+                    className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+                  >
+                    {expandedPosts.includes(post.slug) ? (
+                      <>Read less <ChevronUp className="h-4 w-4" /></>
+                    ) : (
+                      <>Read more <ChevronDown className="h-4 w-4" /></>
+                    )}
+                  </button>
+                  {post.service && (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" className="hover:scale-105 transform duration-200">
+                          View Our {post.service.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Services
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl">
+                        <DialogHeader>
+                          <DialogTitle>Our {post.service.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Services</DialogTitle>
+                          <DialogDescription>
+                            {/* Service content will be dynamically loaded based on the service type */}
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
                   )}
-                </button>
+                </div>
               </CardContent>
             </Card>
           ))}

@@ -16,7 +16,7 @@ const Footer = () => {
     <footer className="bg-background border-t border-border py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
+          <div className="hidden md:block">
             <h3 className="text-xl font-bold mb-4">Media Owl Digital Innovations</h3>
             <p className="text-muted-foreground">
               Creating digital experiences that inspire and innovate.
