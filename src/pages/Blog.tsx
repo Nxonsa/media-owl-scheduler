@@ -29,6 +29,53 @@ const Blog = () => {
       slug: "founder-story",
     },
     {
+      title: "Work From Home Sales Position",
+      description: "Join our team as a remote sales professional",
+      content: `We're looking for motivated individuals to join our sales team in a work-from-home capacity. This position offers flexible hours and competitive commission-based compensation.
+
+      Requirements:
+      - Strong communication skills
+      - Self-motivated and disciplined
+      - Basic computer literacy
+      - Reliable internet connection
+      - Previous sales experience is a plus
+
+      Benefits:
+      - Work from anywhere in South Africa
+      - Flexible hours
+      - Competitive commission structure
+      - Training and support provided
+      - Opportunity for growth
+
+      To apply, please schedule a call with us to discuss this opportunity.`,
+      slug: "sales-position",
+    },
+    {
+      title: "Website Tester Position",
+      description: "Join our usability testing team",
+      content: `We're seeking detail-oriented individuals to join our website testing team. This role involves conducting thorough website evaluations and organizing user feedback.
+
+      Compensation:
+      - R50-R1750 per testing session
+
+      Requirements:
+      - Attention to detail
+      - Basic understanding of web navigation
+      - Ability to provide clear feedback
+      - Reliable internet connection
+      - Available for scheduled testing sessions
+
+      Benefits:
+      - Flexible schedule
+      - Work from home
+      - Regular payment for completed tests
+      - Training provided
+      - Opportunity to influence web design
+
+      To apply, please schedule a call with us to discuss this opportunity.`,
+      slug: "tester-position",
+    },
+    {
       title: "This makes your prototype user friendly",
       description: "Essential tips for user-friendly prototypes",
       content: `Creating a user-friendly prototype is crucial for the success of your digital product. Here are key principles to follow:

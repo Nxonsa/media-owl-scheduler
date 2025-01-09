@@ -95,7 +95,7 @@ const services = [
       },
       {
         name: "Enterprise Package",
-        price: "From 10,000",
+        price: "10,000",
         features: [
           "Everything in Growth",
           "Custom strategy",
@@ -114,9 +114,7 @@ const services = [
         name: "Beginner Researcher",
         price: "25,345.00",
         features: [
-          "10x users one-on-one (1 hour Zoom)",
-          "OR",
-          "10x users video recordings (10 min)"
+          "10x users one-on-one (1 hour Zoom)"
         ]
       },
       {
