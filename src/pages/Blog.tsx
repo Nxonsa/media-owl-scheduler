@@ -167,6 +167,10 @@ const Blog = () => {
     },
   ];
 
+  const handleEmailClick = () => {
+    window.location.href = "mailto:info@mediaowl.co.za?subject=Job Application";
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -217,6 +221,14 @@ const Blog = () => {
                         </DialogHeader>
                       </DialogContent>
                     </Dialog>
+                  )}
+                  {(post.slug === 'sales-position' || post.slug === 'tester-position') && (
+                    <Button 
+                      onClick={handleEmailClick}
+                      className="hover:scale-105 transform duration-200"
+                    >
+                      Apply Now
+                    </Button>
                   )}
                 </div>
               </CardContent>

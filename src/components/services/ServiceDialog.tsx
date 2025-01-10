@@ -2,6 +2,7 @@ import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/c
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { PricingCard } from "./PricingCard";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ServiceDialogProps {
   service: {
@@ -15,9 +16,18 @@ interface ServiceDialogProps {
 
 export const ServiceDialog = ({ service, onPayment }: ServiceDialogProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handlePayment = async (amount: number, serviceName: string) => {
+    await onPayment(amount, serviceName);
+    toast({
+      title: "Order Confirmed!",
+      description: "Redirecting you to schedule a call...",
+    });
+  };
 
   return (
-    <DialogContent className="max-w-4xl bg-background/95 backdrop-blur-sm">
+    <DialogContent className="max-w-4xl bg-background/95 backdrop-blur-sm overflow-y-auto max-h-[90vh] md:max-h-[80vh]">
       <DialogHeader>
         <DialogTitle className="text-2xl mb-4">{service.title}</DialogTitle>
         <DialogDescription>
@@ -32,13 +42,14 @@ export const ServiceDialog = ({ service, onPayment }: ServiceDialogProps) => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-x-auto md:overflow-hidden pb-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
               {service.pricing?.map((plan, planIndex) => (
-                <PricingCard 
-                  key={planIndex}
-                  plan={plan}
-                  onSelect={onPayment}
-                />
+                <div key={planIndex} className="snap-center min-w-[280px] md:min-w-0">
+                  <PricingCard 
+                    plan={plan}
+                    onSelect={handlePayment}
+                  />
+                </div>
               ))}
             </div>
           )}

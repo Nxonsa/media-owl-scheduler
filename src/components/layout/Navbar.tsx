@@ -7,6 +7,15 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/', { state: { scrollTo: sectionId } });
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
@@ -23,9 +32,9 @@ const Navbar = () => {
               <Home size={16} />
               Home
             </button>
-            <a href="#services" className="nav-link">
+            <button onClick={() => scrollToSection('services')} className="nav-link">
               Services
-            </a>
+            </button>
             <button onClick={() => navigate('/blog')} className="nav-link">
               Blog
             </button>
@@ -35,9 +44,9 @@ const Navbar = () => {
             <button onClick={() => navigate('/about')} className="nav-link">
               About
             </button>
-            <a href="#contact" className="nav-link">
+            <button onClick={() => scrollToSection('contact')} className="nav-link">
               Contact
-            </a>
+            </button>
             <Button 
               onClick={() => navigate('/schedule')}
               className="hover:bg-primary/90 transition-colors hover:scale-105 transform duration-200"
@@ -71,13 +80,15 @@ const Navbar = () => {
                 <Home size={16} />
                 Home
               </button>
-              <a
-                href="#services"
-                className="nav-link"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={() => {
+                  scrollToSection('services');
+                  setIsOpen(false);
+                }}
+                className="nav-link text-left"
               >
                 Services
-              </a>
+              </button>
               <button 
                 onClick={() => {
                   navigate('/blog');
@@ -105,13 +116,15 @@ const Navbar = () => {
               >
                 About
               </button>
-              <a
-                href="#contact"
-                className="nav-link"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={() => {
+                  scrollToSection('contact');
+                  setIsOpen(false);
+                }}
+                className="nav-link text-left"
               >
                 Contact
-              </a>
+              </button>
               <Button 
                 onClick={() => {
                   navigate('/schedule');

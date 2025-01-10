@@ -75,7 +75,7 @@ export const PricingCard = ({ plan, onSelect }: PricingCardProps) => {
             `${plan.name} (${billingCycle === 'monthly' ? 'Monthly' : 'Yearly'})`
           )}
         >
-          Get Started
+          Confirm Order
         </Button>
       </CardContent>
     </Card>
