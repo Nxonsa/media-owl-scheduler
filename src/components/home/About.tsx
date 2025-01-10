@@ -69,13 +69,13 @@ const About = () => {
               </div>
               <div className="text-center">
                 <h3 className="text-3xl font-bold mb-2">
-                  <span className="animate-number" data-target="100">0</span>+
+                  <span className="animate-number" data-target="10">0</span>+
                 </h3>
                 <p className="text-sm text-muted-foreground">Projects Completed</p>
               </div>
               <div className="text-center">
                 <h3 className="text-3xl font-bold mb-2">
-                  <span className="animate-number" data-target="50">0</span>+
+                  <span className="animate-number" data-target="10">0</span>+
                 </h3>
                 <p className="text-sm text-muted-foreground">Happy Clients</p>
               </div>
