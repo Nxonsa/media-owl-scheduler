@@ -8,6 +8,7 @@ import Schedule from "./pages/Schedule";
 import Blog from "./pages/Blog";
 import Funders from "./pages/Funders";
 import About from "./pages/About";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/funders" element={<Funders />} />
           <Route path="/about" element={<About />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

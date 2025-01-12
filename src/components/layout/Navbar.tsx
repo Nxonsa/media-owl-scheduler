@@ -22,7 +22,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <a href="/" className="text-2xl font-bold text-foreground md:text-2xl text-lg">
-              Media Owl
+              Media Owl Digital Innovations
             </a>
           </div>
 

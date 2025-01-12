@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
 
 const Blog = () => {
   const [expandedPosts, setExpandedPosts] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const togglePost = (slug: string) => {
     setExpandedPosts(prev => 
@@ -15,6 +16,10 @@ const Blog = () => {
         ? prev.filter(p => p !== slug)
         : [...prev, slug]
     );
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = "mailto:info@mediaowl.co.za?subject=Job Application";
   };
 
   const blogPosts = [
@@ -167,10 +172,6 @@ const Blog = () => {
     },
   ];
 
-  const handleEmailClick = () => {
-    window.location.href = "mailto:info@mediaowl.co.za?subject=Job Application";
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -206,21 +207,13 @@ const Blog = () => {
                     )}
                   </button>
                   {post.service && (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" className="hover:scale-105 transform duration-200">
-                          View Our {post.service.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Services
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl">
-                        <DialogHeader>
-                          <DialogTitle>Our {post.service.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Services</DialogTitle>
-                          <DialogDescription>
-                            {/* Service content will be dynamically loaded based on the service type */}
-                          </DialogDescription>
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
+                    <Button 
+                      variant="outline" 
+                      className="hover:scale-105 transform duration-200"
+                      onClick={() => navigate('/#services')}
+                    >
+                      View Our Services
+                    </Button>
                   )}
                   {(post.slug === 'sales-position' || post.slug === 'tester-position') && (
                     <Button 

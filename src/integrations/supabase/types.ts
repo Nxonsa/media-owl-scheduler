@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          status: string | null
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          status?: string | null
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          status?: string | null
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       goals: {
         Row: {
           completed: boolean | null
@@ -77,6 +113,104 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      training_videos: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          title: string
+          url: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          title: string
+          url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      usability_sessions: {
+        Row: {
+          amount_paid: number
+          id: string
+          notes: string | null
+          payment_date: string
+          session_date: string | null
+          session_type: string
+          status: string | null
+          test_url: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_paid: number
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          session_date?: string | null
+          session_type: string
+          status?: string | null
+          test_url?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_paid?: number
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          session_date?: string | null
+          session_type?: string
+          status?: string | null
+          test_url?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      video_progress: {
+        Row: {
+          feedback: string | null
+          id: string
+          rating: number | null
+          user_id: string | null
+          video_id: string | null
+          watched_at: string | null
+        }
+        Insert: {
+          feedback?: string | null
+          id?: string
+          rating?: number | null
+          user_id?: string | null
+          video_id?: string | null
+          watched_at?: string | null
+        }
+        Update: {
+          feedback?: string | null
+          id?: string
+          rating?: number | null
+          user_id?: string | null
+          video_id?: string | null
+          watched_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_progress_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "training_videos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

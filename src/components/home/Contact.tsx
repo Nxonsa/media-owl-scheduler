@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -16,29 +17,26 @@ const Contact = () => {
     const formData = new FormData(form);
     
     try {
-      // Submit to Google Sheets
-      const response = await fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec', {
-        method: 'POST',
-        body: JSON.stringify({
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { error } = await supabase
+        .from('contact_messages')
+        .insert({
+          user_id: user?.id,
           name: formData.get('name'),
           email: formData.get('email'),
           phone: formData.get('phone'),
           message: formData.get('message'),
-          type: "Newsletter Signup",
-          timestamp: new Date().toISOString()
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Thank you for signing up!",
-          description: "You'll be the first to hear about our sales and upcoming opportunities.",
+          type: "Contact Form",
         });
-        form.reset();
-      }
+
+      if (error) throw error;
+
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you soon.",
+      });
+      form.reset();
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -56,9 +54,9 @@ const Contact = () => {
       <div className="container px-4 mx-auto">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Sign Up for Updates</h2>
+            <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
             <p className="text-muted-foreground">
-              Be the first to hear about our sales and upcoming opportunities!
+              Have a question or want to work together?
             </p>
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -104,13 +102,14 @@ const Contact = () => {
             </div>
             <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2">
-                Message (Optional)
+                Message
               </label>
               <Textarea
                 id="message"
                 name="message"
-                placeholder="Any specific interests or questions?"
+                placeholder="How can we help you?"
                 className="w-full min-h-[150px]"
+                required
               />
             </div>
             <Button 
@@ -119,7 +118,7 @@ const Contact = () => {
               className="w-full"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Signing Up..." : "Sign Up for Updates"}
+              {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
           </form>
         </div>
