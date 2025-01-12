@@ -137,6 +137,20 @@ const services = [
   }
 ];
 
+interface DemoPaymentResult {
+  id: string;
+  status: 'success' | 'error';
+}
+
+interface PricingPlan {
+  name: string;
+  monthly?: string;
+  yearly?: string;
+  yearlyDiscount?: string;
+  price?: string;
+  features: string[];
+}
+
 const Services = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -144,7 +158,7 @@ const Services = () => {
   const handlePayment = async (amount: number, serviceName: string) => {
     try {
       // Demo payment simulation
-      const demoPayment = new Promise((resolve) => {
+      const demoPayment = new Promise<DemoPaymentResult>((resolve) => {
         setTimeout(() => {
           resolve({
             id: `DEMO-${Math.random().toString(36).substr(2, 9)}`,
@@ -160,16 +174,21 @@ const Services = () => {
 
       const result = await demoPayment;
       
+      const service = services.find(s => s.title === serviceName);
+      const plan = service?.pricing?.find(p => {
+        if ('monthly' in p) {
+          return p.monthly === amount.toString() || p.yearly === amount.toString();
+        }
+        return p.price === amount.toString();
+      }) as PricingPlan;
+
       // Store subscription info in localStorage for demo purposes
-      // In production, this should be stored in a database
       localStorage.setItem('subscription', JSON.stringify({
         type: serviceName,
         amount: amount,
         id: result.id,
         startDate: new Date().toISOString(),
-        features: services.find(s => s.title === serviceName)?.pricing?.find(p => 
-          p.monthly === amount.toString() || p.yearly === amount.toString()
-        )?.features || []
+        features: plan?.features || []
       }));
 
       toast({
