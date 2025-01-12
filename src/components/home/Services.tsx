@@ -143,39 +143,49 @@ const Services = () => {
 
   const handlePayment = async (amount: number, serviceName: string) => {
     try {
-      const yoco = new (window as any).YocoSDK({
-        publicKey: 'pk_test_a1bb5ea2qWRdJrL8a3d4'
+      // Demo payment simulation
+      const demoPayment = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            id: `DEMO-${Math.random().toString(36).substr(2, 9)}`,
+            status: 'success'
+          });
+        }, 2000);
+      });
+
+      toast({
+        title: "Processing Payment...",
+        description: "Please wait while we process your payment.",
+      });
+
+      const result = await demoPayment;
+      
+      // Store subscription info in localStorage for demo purposes
+      // In production, this should be stored in a database
+      localStorage.setItem('subscription', JSON.stringify({
+        type: serviceName,
+        amount: amount,
+        id: result.id,
+        startDate: new Date().toISOString(),
+        features: services.find(s => s.title === serviceName)?.pricing?.find(p => 
+          p.monthly === amount.toString() || p.yearly === amount.toString()
+        )?.features || []
+      }));
+
+      toast({
+        title: "Payment Successful!",
+        description: "Redirecting you to schedule a call...",
       });
       
-      yoco.showPopup({
-        amountInCents: amount * 100,
-        currency: 'ZAR',
-        name: 'Media Owl Digital Innovations',
-        description: serviceName,
-        callback: async (result: any) => {
-          if (result.error) {
-            toast({
-              title: "Payment Failed",
-              description: result.error.message,
-              variant: "destructive"
-            });
-          } else {
-            toast({
-              title: "Payment Successful!",
-              description: "Redirecting you to schedule a call...",
-            });
-            
-            setTimeout(() => {
-              navigate('/schedule', { 
-                state: { 
-                  subject: `Paid ${serviceName} - Receipt #${result.id}`,
-                  amount: amount
-                }
-              });
-            }, 2000);
+      setTimeout(() => {
+        navigate('/schedule', { 
+          state: { 
+            subject: `Demo Payment for ${serviceName} - Receipt #${result.id}`,
+            amount: amount
           }
-        }
-      });
+        });
+      }, 2000);
+      
     } catch (error) {
       console.error('Payment error:', error);
       toast({
