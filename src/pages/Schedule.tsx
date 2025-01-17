@@ -66,30 +66,36 @@ const Schedule = () => {
     }
 
     try {
+      console.log("Starting meeting scheduling process");
+      
       // Combine date and time into a single Date object
       const sessionDateTime = new Date(date);
       const [hours, minutes] = time.split(':');
       sessionDateTime.setHours(parseInt(hours), parseInt(minutes));
 
-      const { error } = await supabase
+      // Store session details
+      const { error: sessionError } = await supabase
         .from('usability_sessions')
         .insert([{
-          user_id: user?.id || null,
+          user_id: user?.id || null, // Make user_id optional
           session_date: sessionDateTime.toISOString(),
           session_type: "Consultation",
-          amount_paid: 0, // Initial consultation is free
+          amount_paid: 0,
           notes: requirements,
           status: 'scheduled',
-          test_url: null // This can be added later if needed
+          test_url: null
         }]);
 
-      if (error) throw error;
+      if (sessionError) {
+        console.error('Session creation error:', sessionError);
+        throw sessionError;
+      }
 
-      // Also store contact information
+      // Store contact information
       const { error: contactError } = await supabase
         .from('contact_messages')
         .insert([{
-          user_id: user?.id || null,
+          user_id: user?.id || null, // Make user_id optional
           name,
           email,
           phone,
@@ -98,8 +104,13 @@ const Schedule = () => {
           status: 'pending'
         }]);
 
-      if (contactError) throw contactError;
+      if (contactError) {
+        console.error('Contact message error:', contactError);
+        throw contactError;
+      }
 
+      console.log("Meeting scheduled successfully");
+      
       toast({
         title: "Meeting Scheduled!",
         description: "You will receive a confirmation shortly.",
@@ -125,6 +136,17 @@ const Schedule = () => {
   return (
     <div className="container mx-auto px-4 py-20">
       <h1 className="text-4xl font-bold mb-8">Schedule a Call</h1>
+      {!user && (
+        <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+          <p className="text-yellow-800">
+            Note: You are scheduling as a guest. Consider{" "}
+            <a href="/login" className="text-blue-600 hover:underline">
+              logging in
+            </a>{" "}
+            to track your meetings and get personalized recommendations.
+          </p>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-2xl font-semibold mb-4">Select a Date</h2>
