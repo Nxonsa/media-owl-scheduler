@@ -5,6 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@supabase/auth-helpers-react";
 
 const Schedule = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -14,6 +16,7 @@ const Schedule = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const { toast } = useToast();
+  const user = useAuth();
 
   // Simulated busy times (in reality, this would come from an API)
   const busyTimes = [
@@ -63,38 +66,54 @@ const Schedule = () => {
     }
 
     try {
-      // Submit to Google Sheets
-      const response = await fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec', {
-        method: 'POST',
-        body: JSON.stringify({
+      // Combine date and time into a single Date object
+      const sessionDateTime = new Date(date);
+      const [hours, minutes] = time.split(':');
+      sessionDateTime.setHours(parseInt(hours), parseInt(minutes));
+
+      const { error } = await supabase
+        .from('usability_sessions')
+        .insert([{
+          user_id: user?.id || null,
+          session_date: sessionDateTime.toISOString(),
+          session_type: "Consultation",
+          amount_paid: 0, // Initial consultation is free
+          notes: requirements,
+          status: 'scheduled',
+          test_url: null // This can be added later if needed
+        }]);
+
+      if (error) throw error;
+
+      // Also store contact information
+      const { error: contactError } = await supabase
+        .from('contact_messages')
+        .insert([{
+          user_id: user?.id || null,
           name,
           email,
           phone,
-          date: date.toISOString(),
-          time,
-          requirements,
+          message: requirements,
           type: "Meeting Schedule",
-          timestamp: new Date().toISOString()
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+          status: 'pending'
+        }]);
+
+      if (contactError) throw contactError;
+
+      toast({
+        title: "Meeting Scheduled!",
+        description: "You will receive a confirmation shortly.",
       });
 
-      if (response.ok) {
-        toast({
-          title: "Meeting Scheduled!",
-          description: "You will receive a confirmation shortly.",
-        });
-        // Reset form
-        setDate(undefined);
-        setTime("");
-        setRequirements("");
-        setName("");
-        setEmail("");
-        setPhone("");
-      }
+      // Reset form
+      setDate(undefined);
+      setTime("");
+      setRequirements("");
+      setName("");
+      setEmail("");
+      setPhone("");
     } catch (error) {
+      console.error('Scheduling error:', error);
       toast({
         title: "Error",
         description: "Failed to schedule meeting. Please try again.",
