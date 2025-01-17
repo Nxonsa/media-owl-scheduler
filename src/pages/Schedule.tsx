@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@supabase/auth-helpers-react";
+import { useUser } from "@supabase/auth-helpers-react";
 
 const Schedule = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -16,7 +16,7 @@ const Schedule = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const { toast } = useToast();
-  const user = useAuth();
+  const user = useUser();
 
   // Simulated busy times (in reality, this would come from an API)
   const busyTimes = [
