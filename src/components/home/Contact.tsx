@@ -21,14 +21,14 @@ const Contact = () => {
       
       const { error } = await supabase
         .from('contact_messages')
-        .insert({
-          user_id: user?.id,
-          name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          message: formData.get('message'),
+        .insert([{  // Changed to array with single object
+          user_id: user?.id || null,
+          name: formData.get('name') as string,
+          email: formData.get('email') as string,
+          phone: formData.get('phone') as string,
+          message: formData.get('message') as string,
           type: "Contact Form",
-        });
+        }]);
 
       if (error) throw error;
 
