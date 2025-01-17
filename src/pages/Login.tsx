@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AuthError } from "@supabase/supabase-js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,24 +23,18 @@ const Login = () => {
       }
     });
 
+    // Set up error listener
+    const errorListener = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "USER_DELETED" || event === "SIGNED_OUT") {
+        setError("");
+      }
+    });
+
     return () => {
       authListener.subscription.unsubscribe();
+      errorListener.subscription.unsubscribe();
     };
   }, [navigate]);
-
-  const handleAuthError = (error: AuthError) => {
-    console.error("Auth error:", error);
-    switch (error.message) {
-      case "User already registered":
-        setError("This email is already registered. Please try signing in instead.");
-        break;
-      case "Invalid login credentials":
-        setError("Invalid email or password. Please check your credentials and try again.");
-        break;
-      default:
-        setError(error.message);
-    }
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -69,7 +62,6 @@ const Login = () => {
           }}
           providers={[]}
           redirectTo={window.location.origin}
-          onError={handleAuthError}
         />
       </div>
     </div>
