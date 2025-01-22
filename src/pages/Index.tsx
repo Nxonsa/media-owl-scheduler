@@ -5,7 +5,7 @@ import Services from "@/components/home/Services";
 import About from "@/components/home/About";
 import Contact from "@/components/home/Contact";
 import GalaxyBackground from "@/components/ui/GalaxyBackground";
-import SouthAfricaMap3D from "@/components/ui/SouthAfricaMap3D";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 const Index = () => {
   return (
@@ -18,7 +18,7 @@ const Index = () => {
         <About />
         <Contact />
       </main>
-      <SouthAfricaMap3D />
+      <WhatsAppButton />
       <Footer />
     </div>
   );

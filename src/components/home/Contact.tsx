@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -17,34 +16,24 @@ const Contact = () => {
     const formData = new FormData(form);
     
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      // Store in database
-      const { error: dbError } = await supabase
-        .from('contact_messages')
-        .insert([{
-          user_id: user?.id || null,
-          name: formData.get('name') as string,
-          email: formData.get('email') as string,
-          phone: formData.get('phone') as string,
-          message: formData.get('message') as string,
-          type: "Contact Form",
-        }]);
-
-      if (dbError) throw dbError;
-
-      // Send email notification
-      const { error: emailError } = await supabase.functions.invoke('send-notification', {
-        body: {
-          type: 'contact',
-          name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          message: formData.get('message'),
-        },
+      // Send email using edge function
+      const response = await fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        body: JSON.stringify({
+          to: 'admin@mediaowl.co.za',
+          subject: `New Contact Form Submission from ${formData.get('name')}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${formData.get('name')}</p>
+            <p><strong>Email:</strong> ${formData.get('email')}</p>
+            <p><strong>Phone:</strong> ${formData.get('phone')}</p>
+            <p><strong>Message:</strong></p>
+            <p>${formData.get('message')}</p>
+          `,
+        }),
       });
 
-      if (emailError) throw emailError;
+      if (!response.ok) throw new Error('Failed to send email');
 
       toast({
         title: "Message sent!",
