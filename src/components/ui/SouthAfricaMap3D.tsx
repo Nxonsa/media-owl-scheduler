@@ -11,17 +11,36 @@ const SouthAfricaMap3D = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(40, 40);
+    renderer.setSize(200, 200); // Increased size for better visibility
     mountRef.current.appendChild(renderer.domElement);
 
-    // Create a simplified South Africa shape (cube for now, can be replaced with actual geometry)
-    const geometry = new THREE.BoxGeometry(2, 1.5, 0.5);
+    // Create a simplified Africa continent shape
+    const shape = new THREE.Shape();
+    // Approximate Africa's outline
+    shape.moveTo(0, 2);
+    shape.bezierCurveTo(1, 2, 2, 1, 2, 0);
+    shape.bezierCurveTo(2, -1, 1, -2, 0, -2);
+    shape.bezierCurveTo(-1, -2, -2, -1, -2, 0);
+    shape.bezierCurveTo(-2, 1, -1, 2, 0, 2);
+
+    const extrudeSettings = {
+      depth: 0.4,
+      bevelEnabled: true,
+      bevelSegments: 2,
+      steps: 2,
+      bevelSize: 0.1,
+      bevelThickness: 0.1
+    };
+
+    const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     const material = new THREE.MeshPhongMaterial({ 
       color: '#6B46C1',
       shininess: 100,
     });
-    const southAfrica = new THREE.Mesh(geometry, material);
-    scene.add(southAfrica);
+    
+    const africa = new THREE.Mesh(geometry, material);
+    africa.scale.set(0.5, 0.5, 0.5);
+    scene.add(africa);
 
     // Add lighting
     const ambientLight = new THREE.AmbientLight(0x404040);
@@ -37,7 +56,7 @@ const SouthAfricaMap3D = () => {
     // Animation
     const animate = () => {
       requestAnimationFrame(animate);
-      southAfrica.rotation.y += 0.01;
+      africa.rotation.y += 0.01;
       renderer.render(scene, camera);
     };
 
@@ -54,8 +73,8 @@ const SouthAfricaMap3D = () => {
   return (
     <div 
       ref={mountRef} 
-      className="inline-block w-10 h-10 align-middle"
-      style={{ marginRight: '8px' }}
+      className="fixed bottom-4 left-4 z-50 bg-background/80 backdrop-blur-sm rounded-lg p-2 shadow-lg hover:scale-105 transition-transform duration-200"
+      style={{ width: '200px', height: '200px' }}
     />
   );
 };
