@@ -15,7 +15,7 @@ interface PricingPlan {
 
 interface PricingCardProps {
   plan: PricingPlan;
-  onSelect: (amount: number, name: string) => void;
+  onSelect: () => void;
 }
 
 export const PricingCard = ({ plan, onSelect }: PricingCardProps) => {
@@ -67,15 +67,9 @@ export const PricingCard = ({ plan, onSelect }: PricingCardProps) => {
         </ul>
         <Button 
           className="w-full mt-6 hover:scale-105 transform duration-200"
-          onClick={() => onSelect(
-            parseFloat(('monthly' in plan ? 
-              (billingCycle === 'monthly' ? plan.monthly : plan.yearly) : 
-              plan.price
-            ).replace(',', '')),
-            `${plan.name} (${billingCycle === 'monthly' ? 'Monthly' : 'Yearly'})`
-          )}
+          onClick={onSelect}
         >
-          Confirm Order
+          Contact Us
         </Button>
       </CardContent>
     </Card>

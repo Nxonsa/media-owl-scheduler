@@ -18,12 +18,21 @@ export const ServiceDialog = ({ service, onPayment }: ServiceDialogProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handlePayment = async (amount: number, serviceName: string) => {
-    await onPayment(amount, serviceName);
-    toast({
-      title: "Order Confirmed!",
-      description: "Redirecting you to schedule a call...",
-    });
+  const handleWhatsAppRedirect = (serviceName: string, plan?: any) => {
+    const phoneNumber = "+27645549016";
+    let message = `Hi! I'm interested in ${serviceName}`;
+    
+    if (plan) {
+      message += `\nPlan: ${plan.name}`;
+      if ('monthly' in plan) {
+        message += `\nPrice: R${plan.monthly}/month or R${plan.yearly}/year`;
+      } else if (plan.price) {
+        message += `\nPrice: R${plan.price}`;
+      }
+    }
+    
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
   };
 
   return (
@@ -36,9 +45,12 @@ export const ServiceDialog = ({ service, onPayment }: ServiceDialogProps) => {
           )}
           {service.consultOnly ? (
             <div className="text-center p-6">
-              <p className="mb-6">{service.consultText || "Please schedule a call for a custom quote tailored to your needs."}</p>
-              <Button onClick={() => navigate('/schedule')} className="hover:scale-105 transform duration-200">
-                Schedule a Call
+              <p className="mb-6">{service.consultText || "Please contact us for a custom quote tailored to your needs."}</p>
+              <Button 
+                onClick={() => handleWhatsAppRedirect(service.title)} 
+                className="hover:scale-105 transform duration-200"
+              >
+                Contact Us
               </Button>
             </div>
           ) : (
@@ -47,7 +59,7 @@ export const ServiceDialog = ({ service, onPayment }: ServiceDialogProps) => {
                 <div key={planIndex} className="snap-center min-w-[280px] md:min-w-0">
                   <PricingCard 
                     plan={plan}
-                    onSelect={handlePayment}
+                    onSelect={() => handleWhatsAppRedirect(service.title, plan)}
                   />
                 </div>
               ))}
