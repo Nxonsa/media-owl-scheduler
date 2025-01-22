@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Menu, X, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import SouthAfricaMap3D from "@/components/ui/SouthAfricaMap3D";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +22,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <a href="/" className="text-2xl font-bold text-foreground md:text-2xl text-lg">
+            <a href="/" className="flex items-center text-2xl font-bold text-foreground md:text-2xl text-lg">
+              <SouthAfricaMap3D />
               Media Owl Digital Innovations
             </a>
           </div>
