@@ -14,6 +14,14 @@ const Blog = () => {
     window.location.href = "mailto:info@mediaowl.co.za?subject=Freelance Application";
   };
 
+  const togglePost = (slug: string) => {
+    setExpandedPosts(prev => 
+      prev.includes(slug) 
+        ? prev.filter(id => id !== slug)
+        : [...prev, slug]
+    );
+  };
+
   const blogPosts = [
     {
       title: "Meet Our Founder - Monwabisi Lutyeku",
