@@ -19,9 +19,10 @@ const Contact = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      const { error } = await supabase
+      // Store in database
+      const { error: dbError } = await supabase
         .from('contact_messages')
-        .insert([{  // Changed to array with single object
+        .insert([{
           user_id: user?.id || null,
           name: formData.get('name') as string,
           email: formData.get('email') as string,
@@ -30,7 +31,20 @@ const Contact = () => {
           type: "Contact Form",
         }]);
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke('send-notification', {
+        body: {
+          type: 'contact',
+          name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          message: formData.get('message'),
+        },
+      });
+
+      if (emailError) throw emailError;
 
       toast({
         title: "Message sent!",

@@ -17,6 +17,7 @@ const Schedule = () => {
   const [phone, setPhone] = useState("");
   const { toast } = useToast();
   const user = useUser();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Simulated busy times (in reality, this would come from an API)
   const busyTimes = [
@@ -65,6 +66,8 @@ const Schedule = () => {
       return;
     }
 
+    setIsSubmitting(true);
+
     try {
       console.log("Starting meeting scheduling process");
       
@@ -77,7 +80,7 @@ const Schedule = () => {
       const { error: sessionError } = await supabase
         .from('usability_sessions')
         .insert([{
-          user_id: user?.id || null, // Make user_id optional
+          user_id: user?.id || null,
           session_date: sessionDateTime.toISOString(),
           session_type: "Consultation",
           amount_paid: 0,
@@ -95,7 +98,7 @@ const Schedule = () => {
       const { error: contactError } = await supabase
         .from('contact_messages')
         .insert([{
-          user_id: user?.id || null, // Make user_id optional
+          user_id: user?.id || null,
           name,
           email,
           phone,
@@ -108,6 +111,21 @@ const Schedule = () => {
         console.error('Contact message error:', contactError);
         throw contactError;
       }
+
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke('send-notification', {
+        body: {
+          type: 'schedule',
+          name,
+          email,
+          phone,
+          message: requirements,
+          sessionDate: date.toLocaleDateString(),
+          sessionTime: time,
+        },
+      });
+
+      if (emailError) throw emailError;
 
       console.log("Meeting scheduled successfully");
       
@@ -130,6 +148,8 @@ const Schedule = () => {
         description: "Failed to schedule meeting. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
