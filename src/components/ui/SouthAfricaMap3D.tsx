@@ -11,7 +11,7 @@ const SouthAfricaMap3D = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(200, 200); // Increased size for better visibility
+    renderer.setSize(300, 300); // Increased size even more for better visibility
     mountRef.current.appendChild(renderer.domElement);
 
     // Create a simplified Africa continent shape
@@ -73,8 +73,8 @@ const SouthAfricaMap3D = () => {
   return (
     <div 
       ref={mountRef} 
-      className="fixed bottom-4 left-4 z-50 bg-background/80 backdrop-blur-sm rounded-lg p-2 shadow-lg hover:scale-105 transition-transform duration-200"
-      style={{ width: '200px', height: '200px' }}
+      className="fixed bottom-8 left-8 z-50 bg-background/80 backdrop-blur-sm rounded-lg p-4 shadow-xl hover:scale-105 transition-transform duration-200 animate-float"
+      style={{ width: '300px', height: '300px' }}
     />
   );
 };

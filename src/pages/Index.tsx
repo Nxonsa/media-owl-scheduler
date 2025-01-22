@@ -5,6 +5,7 @@ import Services from "@/components/home/Services";
 import About from "@/components/home/About";
 import Contact from "@/components/home/Contact";
 import GalaxyBackground from "@/components/ui/GalaxyBackground";
+import SouthAfricaMap3D from "@/components/ui/SouthAfricaMap3D";
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
         <About />
         <Contact />
       </main>
+      <SouthAfricaMap3D />
       <Footer />
     </div>
   );
