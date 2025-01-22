@@ -10,16 +10,8 @@ const Blog = () => {
   const [expandedPosts, setExpandedPosts] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  const togglePost = (slug: string) => {
-    setExpandedPosts(prev => 
-      prev.includes(slug) 
-        ? prev.filter(p => p !== slug)
-        : [...prev, slug]
-    );
-  };
-
   const handleEmailClick = () => {
-    window.location.href = "mailto:info@mediaowl.co.za?subject=Job Application";
+    window.location.href = "mailto:info@mediaowl.co.za?subject=Freelance Application";
   };
 
   const blogPosts = [
@@ -169,6 +161,33 @@ const Blog = () => {
       Ready to take your business online? Our website development team can create the perfect solution for your needs.`,
       slug: "need-website",
       service: "website-development"
+    },
+    {
+      title: "Our Services Overview",
+      description: "Comprehensive guide to Media Owl's digital solutions",
+      content: `At Media Owl, we offer a comprehensive suite of digital services:
+
+      1. Website Development
+      From simple landing pages to complex e-commerce solutions, we create responsive, user-friendly websites tailored to your needs.
+
+      2. App Development
+      Custom mobile applications that engage users and drive business growth.
+
+      3. Custom Software
+      Bespoke software solutions designed to streamline your business processes.
+
+      4. Digital Marketing
+      Data-driven strategies to boost your online presence and reach.
+
+      5. Usability Testing
+      Professional testing services to ensure optimal user experience.
+
+      6. AI Workflow Automation
+      Cutting-edge AI solutions to automate and optimize your business processes.
+
+      Contact us to discuss how we can help transform your digital presence.`,
+      slug: "services-overview",
+      service: "all"
     },
   ];
 

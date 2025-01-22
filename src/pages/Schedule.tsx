@@ -67,99 +67,24 @@ const Schedule = () => {
       return;
     }
 
-    if (!user) {
-      toast({
-        title: "Error",
-        description: "Please sign in to schedule a meeting",
-        variant: "destructive",
-      });
-      return;
-    }
+    const emailBody = `
+Scheduling Request Details:
 
-    setIsSubmitting(true);
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Date: ${date.toLocaleDateString()}
+Time: ${time}
+Requirements: ${requirements}
+    `;
 
-    try {
-      console.log("Starting meeting scheduling process");
-      
-      // Combine date and time into a single Date object
-      const sessionDateTime = new Date(date);
-      const [hours, minutes] = time.split(':');
-      sessionDateTime.setHours(parseInt(hours), parseInt(minutes));
-
-      // Store session details
-      const { error: sessionError } = await supabase
-        .from('usability_sessions')
-        .insert({
-          user_id: user.id,
-          session_date: sessionDateTime.toISOString(),
-          session_type: "Consultation",
-          amount_paid: 0,
-          notes: requirements,
-          status: 'scheduled'
-        });
-
-      if (sessionError) {
-        console.error('Session creation error:', sessionError);
-        throw sessionError;
-      }
-
-      // Store contact information
-      const { error: contactError } = await supabase
-        .from('contact_messages')
-        .insert({
-          user_id: user.id,
-          name,
-          email,
-          phone,
-          message: requirements,
-          type: "Meeting Schedule",
-          status: 'pending'
-        });
-
-      if (contactError) {
-        console.error('Contact message error:', contactError);
-        throw contactError;
-      }
-
-      // Send email notification
-      const { error: emailError } = await supabase.functions.invoke('send-notification', {
-        body: {
-          type: 'schedule',
-          name,
-          email,
-          phone,
-          message: requirements,
-          sessionDate: date.toLocaleDateString(),
-          sessionTime: time,
-        },
-      });
-
-      if (emailError) throw emailError;
-
-      console.log("Meeting scheduled successfully");
-      
-      toast({
-        title: "Meeting Scheduled!",
-        description: "You will receive a confirmation shortly.",
-      });
-
-      // Reset form
-      setDate(undefined);
-      setTime("");
-      setRequirements("");
-      setName("");
-      setEmail("");
-      setPhone("");
-    } catch (error) {
-      console.error('Scheduling error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to schedule meeting. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    const mailtoLink = `mailto:admin@mediaowl.co.za?subject=Meeting Schedule Request&body=${encodeURIComponent(emailBody)}`;
+    window.location.href = mailtoLink;
+    
+    toast({
+      title: "Email client opened!",
+      description: "Please review and send your scheduling request.",
+    });
   };
 
   return (

@@ -134,6 +134,45 @@ const services = [
         ]
       }
     ]
+  },
+  {
+    title: "AI Workflow Automation",
+    description: "Streamline your business processes with cutting-edge AI solutions.",
+    icon: Code,
+    pricing: [
+      {
+        name: "Basic Automation",
+        price: "4,999",
+        features: [
+          "1 workflow automation",
+          "Basic AI integration",
+          "Monthly maintenance",
+          "Email support"
+        ]
+      },
+      {
+        name: "Business Automation",
+        price: "9,999",
+        features: [
+          "3 workflow automations",
+          "Advanced AI integration",
+          "Weekly maintenance",
+          "Priority support",
+          "Custom reporting"
+        ]
+      },
+      {
+        name: "Enterprise Automation",
+        price: "19,999",
+        features: [
+          "Unlimited workflow automations",
+          "Full AI suite integration",
+          "Daily maintenance",
+          "24/7 support",
+          "Custom development"
+        ]
+      }
+    ]
   }
 ];
 

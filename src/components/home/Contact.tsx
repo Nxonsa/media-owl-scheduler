@@ -6,50 +6,38 @@ import { useState } from "react";
 
 const Contact = () => {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
+    const emailBody = `
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Message: ${formData.message}
+    `;
+
+    const mailtoLink = `mailto:admin@mediaowl.co.za?subject=Contact Form Submission from ${formData.name}&body=${encodeURIComponent(emailBody)}`;
     
-    try {
-      // Send email using edge function
-      const response = await fetch('/.netlify/functions/send-email', {
-        method: 'POST',
-        body: JSON.stringify({
-          to: 'admin@mediaowl.co.za',
-          subject: `New Contact Form Submission from ${formData.get('name')}`,
-          html: `
-            <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${formData.get('name')}</p>
-            <p><strong>Email:</strong> ${formData.get('email')}</p>
-            <p><strong>Phone:</strong> ${formData.get('phone')}</p>
-            <p><strong>Message:</strong></p>
-            <p>${formData.get('message')}</p>
-          `,
-        }),
-      });
-
-      if (!response.ok) throw new Error('Failed to send email');
-
-      toast({
-        title: "Message sent!",
-        description: "We'll get back to you soon.",
-      });
-      form.reset();
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    window.location.href = mailtoLink;
+    
+    toast({
+      title: "Email client opened!",
+      description: "Please review and send your message.",
+    });
   };
 
   return (
@@ -71,6 +59,8 @@ const Contact = () => {
                 <Input
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="John Doe"
                   required
                   className="w-full"
@@ -84,6 +74,8 @@ const Contact = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="john@example.com"
                   required
                   className="w-full"
@@ -98,6 +90,8 @@ const Contact = () => {
                 id="phone"
                 name="phone"
                 type="tel"
+                value={formData.phone}
+                onChange={handleChange}
                 placeholder="0123456789"
                 required
                 className="w-full"
@@ -110,6 +104,8 @@ const Contact = () => {
               <Textarea
                 id="message"
                 name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="How can we help you?"
                 className="w-full min-h-[150px]"
                 required
@@ -119,9 +115,8 @@ const Contact = () => {
               type="submit" 
               size="lg" 
               className="w-full"
-              disabled={isSubmitting}
             >
-              {isSubmitting ? "Sending..." : "Send Message"}
+              Send Message
             </Button>
           </form>
         </div>
