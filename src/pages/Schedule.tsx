@@ -57,6 +57,7 @@ const Schedule = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     if (!date || !time || !requirements || !name || !email || !phone) {
       toast({
@@ -64,10 +65,34 @@ const Schedule = () => {
         description: "Please fill in all fields",
         variant: "destructive",
       });
+      setIsSubmitting(false);
       return;
     }
 
-    const emailBody = `
+    try {
+      // First, store the message in Supabase
+      const { error } = await supabase
+        .from('contact_messages')
+        .insert({
+          name,
+          email,
+          phone,
+          message: `
+Date: ${date.toLocaleDateString()}
+Time: ${time}
+Requirements: ${requirements}
+          `,
+          type: 'schedule',
+          user_id: user?.id || null,
+        });
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      // Then, prepare email content
+      const emailBody = `
 Scheduling Request Details:
 
 Name: ${name}
@@ -76,15 +101,25 @@ Phone: ${phone}
 Date: ${date.toLocaleDateString()}
 Time: ${time}
 Requirements: ${requirements}
-    `;
+      `;
 
-    const mailtoLink = `mailto:admin@mediaowl.co.za?subject=Meeting Schedule Request&body=${encodeURIComponent(emailBody)}`;
-    window.location.href = mailtoLink;
-    
-    toast({
-      title: "Email client opened!",
-      description: "Please review and send your scheduling request.",
-    });
+      const mailtoLink = `mailto:admin@mediaowl.co.za?subject=Meeting Schedule Request&body=${encodeURIComponent(emailBody)}`;
+      window.location.href = mailtoLink;
+      
+      toast({
+        title: "Email client opened!",
+        description: "Please review and send your scheduling request.",
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to submit the form. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
