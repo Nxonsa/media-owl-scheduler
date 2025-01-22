@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,10 +57,20 @@ const Schedule = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!date || !time || !requirements || !name || !email || !phone) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "Please sign in to schedule a meeting",
         variant: "destructive",
       });
       return;
@@ -79,15 +89,14 @@ const Schedule = () => {
       // Store session details
       const { error: sessionError } = await supabase
         .from('usability_sessions')
-        .insert([{
-          user_id: user?.id || null,
+        .insert({
+          user_id: user.id,
           session_date: sessionDateTime.toISOString(),
           session_type: "Consultation",
           amount_paid: 0,
           notes: requirements,
-          status: 'scheduled',
-          test_url: null
-        }]);
+          status: 'scheduled'
+        });
 
       if (sessionError) {
         console.error('Session creation error:', sessionError);
@@ -97,15 +106,15 @@ const Schedule = () => {
       // Store contact information
       const { error: contactError } = await supabase
         .from('contact_messages')
-        .insert([{
-          user_id: user?.id || null,
+        .insert({
+          user_id: user.id,
           name,
           email,
           phone,
           message: requirements,
           type: "Meeting Schedule",
           status: 'pending'
-        }]);
+        });
 
       if (contactError) {
         console.error('Contact message error:', contactError);
@@ -243,8 +252,8 @@ const Schedule = () => {
                 Meeting will be held via Zoom
               </p>
             </div>
-            <Button type="submit" className="w-full">
-              Schedule Meeting
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? "Scheduling..." : "Schedule Meeting"}
             </Button>
           </form>
         </div>
