@@ -62,6 +62,12 @@
   @apply w-full;
 }
 
+/* Align all contact buttons */
+button[type="submit"],
+.contact-button {
+  @apply w-full md:w-auto mx-auto block;
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-20px); }

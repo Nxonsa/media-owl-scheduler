@@ -67,7 +67,7 @@ const Footer = () => {
                       <DialogTitle>Open Positions</DialogTitle>
                       <DialogDescription className="space-y-8 pt-4">
                         <div className="space-y-4">
-                          <h3 className="font-semibold text-lg">1. Work From Home Sales Position</h3>
+                          <h3 className="font-semibold text-lg">1. Freelance Sales Position</h3>
                           <div className="space-y-2">
                             <p className="font-semibold">Offer:</p>
                             <ul className="list-disc pl-5 space-y-1">
@@ -113,7 +113,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border text-center text-muted-foreground">
-          <p>&copy; 2024 Media Owl Digital Innovations. All rights reserved.</p>
+          <p>&copy; 2025 Media Owl Digital Innovations. All rights reserved.</p>
         </div>
       </div>
     </footer>
