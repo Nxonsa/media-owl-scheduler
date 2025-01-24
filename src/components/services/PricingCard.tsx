@@ -65,12 +65,14 @@ export const PricingCard = ({ plan, onSelect }: PricingCardProps) => {
             </li>
           ))}
         </ul>
-        <Button 
-          className="w-full mt-6 hover:scale-105 transform duration-200"
-          onClick={onSelect}
-        >
-          Contact Us
-        </Button>
+        <div className="flex justify-center mt-6">
+          <Button 
+            className="w-full max-w-[200px] hover:scale-105 transform duration-200"
+            onClick={onSelect}
+          >
+            Contact Us
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

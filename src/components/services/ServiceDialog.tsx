@@ -46,12 +46,14 @@ export const ServiceDialog = ({ service, onPayment }: ServiceDialogProps) => {
           {service.consultOnly ? (
             <div className="text-center p-6">
               <p className="mb-6">{service.consultText || "Please contact us for a custom quote tailored to your needs."}</p>
-              <Button 
-                onClick={() => handleWhatsAppRedirect(service.title)} 
-                className="hover:scale-105 transform duration-200"
-              >
-                Contact Us
-              </Button>
+              <div className="flex justify-center">
+                <Button 
+                  onClick={() => handleWhatsAppRedirect(service.title)} 
+                  className="hover:scale-105 transform duration-200 w-full max-w-[200px]"
+                >
+                  Contact Us
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">

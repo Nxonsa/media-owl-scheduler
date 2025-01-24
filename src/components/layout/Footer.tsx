@@ -8,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ServiceDialog } from "../services/ServiceDialog";
+import { services } from "../home/Services";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -21,25 +23,28 @@ const Footer = () => {
             <p className="text-muted-foreground">
               Creating digital experiences that inspire and innovate.
             </p>
+            <p className="mt-2 text-muted-foreground">
+              Contact us: <a href="mailto:admin@mediaowl.co.za" className="text-primary hover:underline">admin@mediaowl.co.za</a>
+            </p>
           </div>
           <div>
-            <h4 className="font-semibold mb-4">Services</h4>
+            <h4 className="font-semibold mb-4">Our Services</h4>
             <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  App Development
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Website Creation
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Digital Marketing
-                </a>
-              </li>
+              {services.slice(0, 3).map((service, index) => (
+                <li key={index}>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-muted-foreground hover:text-foreground transition-colors">
+                        {service.title}
+                      </button>
+                    </DialogTrigger>
+                    <ServiceDialog 
+                      service={service}
+                      onPayment={() => {}}
+                    />
+                  </Dialog>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
@@ -71,8 +76,8 @@ const Footer = () => {
                           <div className="space-y-2">
                             <p className="font-semibold">Offer:</p>
                             <ul className="list-disc pl-5 space-y-1">
-                              <li>R4,500 Monthly Basic Salary</li>
-                              <li>Uncapped Commission Structure</li>
+                              <li>Commission-based compensation</li>
+                              <li>Uncapped earning potential</li>
                               <li>Work From Home Opportunity</li>
                             </ul>
                           </div>
