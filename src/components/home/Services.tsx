@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import { ServiceDialog } from "../services/ServiceDialog";
 
-const services = [
+export const services = [
   {
     title: "Website Development",
     description: "Create stunning, responsive websites that capture your brand's essence.",
